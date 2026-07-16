@@ -1,3 +1,5 @@
+# تجاهل قاعدة البيانات والمفاتيح السرية
+users.db
 .env
-config.js
-*.log
+__pycache__/
+*.pyc
