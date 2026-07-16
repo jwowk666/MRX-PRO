@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect
+from flask_wtf import FlaskForm, RecaptchaField
+from wtforms import StringField, SubmitField
+from flask_wtf.csrf import CSRFProtect
 import sqlite3
-import requests
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key_change_me' # للحماية
+app.config['SECRET_KEY'] = 'your_secret_key_here'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6Lf_fVctAAAAAOp-gD5LJ9jFldNwIv3HdQd8grmC'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6Lf_fVctAAAAAKGhagxL4Ksp4tS0BTe7tV_onpA4'
+csrf = CSRFProtect(app)
 
-# إعداد قاعدة البيانات
 def init_db():
     conn = sqlite3.connect('users.db')
     conn.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, discord TEXT, tiktok TEXT, img_url TEXT)')
@@ -13,34 +17,17 @@ def init_db():
 
 init_db()
 
-@app.route('/', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        # تنظيف البيانات (حماية من XSS)
-        d = request.form['discord'].replace('<', '').replace('>', '')
-        t = request.form['tiktok'].replace('<', '').replace('>', '')
-        i = request.form['img_url']
-        
-        conn = sqlite3.connect('users.db')
-        cur = conn.cursor()
-        cur.execute("INSERT INTO users (discord, tiktok, img_url) VALUES (?, ?, ?)", (d, t, i))
-        user_id = cur.lastrowid
-        conn.commit()
-        conn.close()
-        return f"تم التسجيل بنجاح! رقمك الخاص هو: {user_id}"
-    return render_template('index.html')
+class UserForm(FlaskForm):
+    discord = StringField('Discord Username')
+    tiktok = StringField('TikTok Username')
+    img_url = StringField('Profile Image URL')
+    recaptcha = RecaptchaField()
+    submit = SubmitField('تسجيل')
 
-@app.route('/search', methods=['POST'])
-def search():
-    user_id = request.form['id']
-    conn = sqlite3.connect('users.db')
-    user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
-    conn.close()
-    
-    if user:
-        # هنا يمكنك إضافة كود إرسال Webhook للديسكورد
-        return f"البيانات: ديسكورد: {user[1]}, تيك توك: {user[2]}"
-    return "لم يتم العثور على مستخدم"
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = UserForm()
+    return render_template('index.html', form=form)
 
 if __name__ == '__main__':
-    app.run(debug=False) # تأكد أن debug False للحماية عند التشغيل الفعلي
+    app.run(debug=True)
