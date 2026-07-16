@@ -1,0 +1,6 @@
+body { background: #000; color: #d4af37; font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.card { background: #111; padding: 30px; border: 2px solid #d4af37; border-radius: 10px; width: 320px; text-align: center; box-shadow: 0 0 15px #d4af37; }
+input { width: 100%; padding: 10px; margin: 8px 0; background: #222; border: 1px solid #d4af37; color: white; border-radius: 4px; box-sizing: border-box; }
+button { background: #d4af37; color: #000; border: none; padding: 10px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
+.danger-btn { background: transparent; color: red; border: 1px solid red; }
+.hidden { display: none; }
