@@ -2,13 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>MRX-PRO | Kingdom of Drak</title>
+    <title>MRX-PRO | Kingdom Identity</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="card" id="step1">
         <h1>مملكة الدراك</h1>
-        <p>بإكمالك هذا التسجيل، أنت تقر بأنك المسؤول عن بياناتك.</p>
+        <p>بإكمالك هذا التسجيل، أنت تقر بمسؤوليتك الكاملة.</p>
         <button onclick="show('step2')">موافق</button>
         <button onclick="window.close()" class="danger-btn">لا أوافق</button>
     </div>
@@ -27,7 +27,12 @@
         <button onclick="send()">إنشاء الهوية</button>
     </div>
 
+    <div class="card hidden" id="final">
+        <h1>تم إنشاء الهوية</h1>
+        <p id="codeDisplay" style="font-size: 24px; font-weight: bold; color: #d4af37;"></p>
+        <p>احفظ هذا الكود الخاص بك.</p>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-
